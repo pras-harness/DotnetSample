@@ -19,6 +19,6 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
-    repo: prashdockerrepo/dotnetcore
+    repo: prashkudocker/prashdockerrepo
     auto_tag: true
     auto_tag_suffix: drone-build-dotnetcore
