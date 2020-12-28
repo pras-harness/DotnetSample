@@ -10,7 +10,7 @@ steps:
 - name: build
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
   commands:
-    - "dotnet run"
+    - "dotnet aspnetapp.dll"
 
 - name: publish  
   image: plugins/docker
