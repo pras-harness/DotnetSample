@@ -2,23 +2,29 @@
 #Commit Message: Drone! Captain Canary is here! 
 
 kind: pipeline
-type: kubernetes
+type: docker
 name: default
 
 steps:
+  - name: build-image
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
 
-- name: build
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1
-  commands:
-    - "dotnet aspnetapp.dll"
+  - name: run-script
+    image: 915632791698.dkr.ecr.us-east-2.amazonaws.com/nginx-custom:vipul1
+    commands:
+      - ls -l
 
-- name: publish  
-  image: plugins/docker
-  settings:
-    username:
-      from_secret: docker_username
-    password:
-      from_secret: docker_password
-    repo: prashkudocker/prashdockerrepo
-    auto_tag: true
-    auto_tag_suffix: drone-build-dotnetcore
+trigger:
+  event:
+    include:
+    - push
+    - pull_request
+  branch:
+    - master
+volumes:
+- name: dockersock
+  host:
+    path: /var/run/docker.sock
